@@ -1,5 +1,5 @@
 import { Footer } from "app/components/shared/Footer";
-import { RequireAuth } from "app/components/shared/Middleware";
+import { RequireAuth } from "app/components/shared/MiddlewareX";
 import Navbar from "app/components/shared/Navbar/Navbar";
 import "app/styles/globals.scss";
 import { Provider } from "react-redux";

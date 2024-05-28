@@ -8,6 +8,7 @@ import { Setup } from "app/components/shared/Setup";
 import { Navbars } from "app/components/shared/Navbar";
 import { Footer } from "app/components/shared/Footer";
 import { SidebarProvider } from "app/components/logged/Library/PDFViewer/SideBarProvider";
+import { db } from "../../lib/db";
 
 const myFont3 = Quicksand({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body

@@ -5,7 +5,12 @@ import { Button } from "app/components/shared/Button";
 import styles from "../Auth.module.scss";
 import { TextField } from "app/components/shared/TextField";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { LoginSchema } from "app/schemas";
+import { useTransition } from "react";
+
 import { useState } from "react";
 import { FormDivider } from "../FormDivider";
 import { FormError } from "../FormError";
@@ -17,6 +22,8 @@ import { useRouter } from 'next/navigation';
 import { Loader } from "app/components/shared/Loader";
 import { toast } from "react-toastify";
 import { continueWithGoogle } from "app/utils";
+import { login } from "../../../../../actions/login";
+
 
 type FormInputs = {
   email: string;
@@ -28,33 +35,39 @@ export default function LoginForm() {
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const [login2, { isLoading }] = useLoginMutation();
-  const dispatch = useAppDispatch();
+  const [isPending, startTransition] = useTransition();
   
-
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm<FormInputs>();
+  
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<z.infer<typeof LoginSchema>>({
+      resolver: zodResolver(LoginSchema),
+      defaultValues: {
+        email: "",
+        password: "",
+      }
+    })
 
-  const onSubmit = handleSubmit((data) => {
-
-    login2({email: data.email, password: data.password})
-      .unwrap()
-      .then(() => {
-        setError(undefined);
-        toast.success('Logged in');
-        dispatch(setAuth());
-        setSuccess("You have been logged successfully");
-        router.push('/logged');
+  const onSubmit: SubmitHandler<FormInputs> = (values: z.infer<typeof LoginSchema>) => {
+    startTransition(() => {
+      login(values)
+      .then((data) => {
+        if (data) {
+          setError(data.error);
+          // setSuccess(data.success);
+        }
       })
-      .catch((e) => {
-        setSuccess(undefined);
-        setError(e.data.detail || "There was an error while login, please try again");
-      });
-      
-  });
+    })
+    
+  }
 
   return (
     <div className={styles.auth__form}>
@@ -62,21 +75,12 @@ export default function LoginForm() {
         <img src="/appLogo.svg" alt="IdioMind logo" />
         <h2>Login</h2>
       </div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <TextField label="E-mail">
           <input
             type="email"
-            disabled={isLoading}
-            {...register("email", {
-              required: {
-                value: true,
-                message: "*Email is required",
-              },
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: "*Invalid email address",
-              },
-            })}
+            disabled={isPending}
+            id="email" {...register("email")}
             placeholder="user@email.com"
           />
         </TextField>
@@ -85,14 +89,9 @@ export default function LoginForm() {
         )}
         <TextField label="Password">
           <input
-            disabled={isLoading}
+            disabled={isPending}
             type={visiblePassword ? "text" : "password"}
-            {...register("password", {
-              required: {
-                value: true,
-                message: "*Password is required",
-              },
-            })}
+            id="password" {...register("password")}
             placeholder="******"
           />
           {!visiblePassword ? (
@@ -122,7 +121,7 @@ export default function LoginForm() {
         </p>
         <FormError message={error} />
         <FormSuccess message={success} />
-        <Button type="submit" disabled={isLoading}> {isLoading ? <Loader color="white"/> : "Log in"}</Button>
+        <Button type="submit" disabled={isPending}> {isPending ? <Loader color="white"/> : "Log in"}</Button>
         <p className={styles.auth__form__register}>
           You dont have an account?{" "}
           <Link href={"/auth/register"}>Register here</Link>

@@ -6,7 +6,6 @@ import { TextField } from "app/components/shared/TextField";
 import Link from "next/link";
 import Image from "next/image";
 import { FormDivider } from "../FormDivider";
-import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FormSuccess";
@@ -15,13 +14,18 @@ import { Loader } from "app/components/shared/Loader";
 import { continueWithGoogle } from "app/utils";
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { RegisterSchema } from "app/schemas";
+import { register2 } from "../../../../../actions/register";
 
 type FormInputs = {
   first_name: string;
   last_name: string;
   email: string;
   password: string;
-  re_Password: string;
+  re_password: string;
   terms: boolean;
 };
 
@@ -29,52 +33,44 @@ export default function RegisterForm() {
   const router = useRouter();
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [visiblePassword2, setVisiblePassword2] = useState(false);
+  const [errorPassword, setErrorPassword] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const [register2, { isLoading }] = useRegisterMutation();
 
   const {
     register,
-    watch,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<FormInputs>();
-
-  const password = watch("password");
-  const confirmPassword = watch("re_Password");
-
-  const onSubmit = handleSubmit((data: any) => {
-    if (data.last_name === "") {
-      data.last_name = "none";
-    }
-    register2({
-      first_name: data.first_name,
-      last_name: data.last_name,
-      email: data.email,
-      password: data.password,
-      re_password: data.password,
+  } = useForm<z.infer<typeof RegisterSchema>>({
+      resolver: zodResolver(RegisterSchema),
+      defaultValues: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        re_password: "",
+        terms: false,
+      }
     })
-      .unwrap()
-      .then(() => {
-        setError(undefined);
-        setSuccess("You have been registered successfully.");
-        toast.success("You have been registered successfully.");
-        router.push('/auth/login');
-      })
-      .catch((e) => {
-        setSuccess(undefined);
-        // if (e.data && e.data.password) {
-        //   setError(e.data.password.join(" "));
-        // } else if (e.data && e.data.email) {
-        //   setError(e.data.email.join(" "));
-        // } else {
-          setError(
-              "There was an error while registering, please try again"
-          );
-        // }
-      });
-  });
+
+    const onSubmit: SubmitHandler<FormInputs> = (values: z.infer<typeof RegisterSchema>) => {
+      console.log(values);
+      if(values.password !== values.re_password){
+        setError("Passwords do not match");
+        return;
+      }else{
+        setError("");
+        startTransition(() => {
+          register2(values)
+            .then((data) => {
+              setError(data.error);
+              setSuccess(data.success);
+            })
+          })
+      }
+    }
 
   return (
     <div className={styles.auth__form}>
@@ -97,25 +93,22 @@ export default function RegisterForm() {
         Sign up with google
       </Button>
       <FormDivider />
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.auth__form__names}>
           <TextField label="First name*">
             <input
               type="first_name"
-              {...register("first_name", {
-                required: {
-                  value: true,
-                  message: "*Name is required",
-                },
-              })}
               placeholder="Jack"
+              id="first_name" {...register("first_name")}
+              disabled={isPending}
             />
           </TextField>
           <TextField label="Last name">
             <input
               type="last_name"
-              {...register("last_name", {})}
               placeholder="Doe"
+              id="last_name" {...register("last_name")}
+              disabled={isPending}
             />
           </TextField>
         </div>
@@ -125,18 +118,10 @@ export default function RegisterForm() {
         <TextField label="E-mail*">
           <input
             type="email"
-            {...register("email", {
-              required: {
-                value: true,
-                message: "*Email is required",
-              },
-              // pattern: {
-              //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              //   message: "*Invalid email address",
-              // },
-            })}
             className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
             placeholder="user@email.com"
+            id="email" {...register("email")}
+            disabled={isPending}
           />
         </TextField>
         {errors.email && (
@@ -145,21 +130,9 @@ export default function RegisterForm() {
         <TextField label="Password*">
           <input
             type={visiblePassword ? "text" : "password"}
-            {...register("password", {
-              required: {
-                value: true,
-                message: "*Password is required",
-              },
-              // minLength: {
-              //   value: 8,
-              //   message: "*Password must have at least 8 characters",
-              // },
-              // pattern: {
-              //   value: /\d/,
-              //   message: "*Password must contain at least one number",
-              // },
-            })}
             placeholder="******"
+            id="password" {...register("password")}
+            disabled={isPending}
           />
           {!visiblePassword ? (
             <svg
@@ -182,18 +155,12 @@ export default function RegisterForm() {
         {errors.password && (
           <span className={styles.errorInput}>{errors.password.message}</span>
         )}
-        {/* <TextField label="Confirm password*">
+        <TextField label="Confirm password*">
           <input
             type={visiblePassword2 ? "text" : "password"}
-            {...register("re_Password", {
-              required: {
-                value: true,
-                message: "*Confirmation is required",
-              },
-              validate: (value) =>
-                value === password || "*The passwords don't match",
-            })}
+            id="re_password" {...register("re_password")}
             placeholder="******"
+            disabled={isPending}
           />
           {!visiblePassword2 ? (
             <svg
@@ -213,21 +180,15 @@ export default function RegisterForm() {
             </svg>
           )}
         </TextField> 
-        {errors.re_Password && (
+        {errors.re_password && (
           <span className={styles.errorInput}>
-            {errors.re_Password.message}
+            {errors.re_password.message}
           </span>
-        )}*/}
+        )}
         <label className={styles.auth__form__terms}>
           <input
             type="checkbox"
-            // {...register("terms", {
-            //   required: {
-            //     value: true,
-            //     message:
-            //       "*You have to accept the terms and conditions to continue",
-            //   },
-            // })}
+            id="terms" {...register("terms")}
           />
           <p>
             {" "}
@@ -241,11 +202,10 @@ export default function RegisterForm() {
         )}
         <FormError message={error} />
         <FormSuccess message={success} />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? <Loader color="white" /> : "Sign up"}
+        <Button type="submit" disabled={isPending}>
+          {isPending ? <Loader color="white" /> : "Sign up"}
         </Button>
       </form>
-
       <p>
         You already have an account?{" "}
         <Link href={"/auth/login"}>Log in here</Link>
