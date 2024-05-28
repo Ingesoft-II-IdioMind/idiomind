@@ -168,6 +168,12 @@
   //margin: 1rem 0px;
 }
 
+.auth__recaptcha {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem; 
+}
+
 @media screen and (max-width: 806px) {
   .auth {
     justify-content: center;

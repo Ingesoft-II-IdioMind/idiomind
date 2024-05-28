@@ -17,10 +17,12 @@ import { useRouter } from 'next/navigation';
 import { Loader } from "app/components/shared/Loader";
 import { toast } from "react-toastify";
 import { continueWithGoogle } from "app/utils";
+import ReCAPTCHA from "react-google-recaptcha";
 
 type FormInputs = {
   email: string;
   password: string;
+  recaptchaToken: string | null;
 };
 
 export default function LoginForm() {
@@ -28,19 +30,28 @@ export default function LoginForm() {
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>();
   const [login2, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   
-
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
 
-  const onSubmit = handleSubmit((data) => {
+  const handleCaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+  };
 
-    login2({email: data.email, password: data.password})
+  const onSubmit = handleSubmit((data) => {
+    if (!recaptchaToken) {
+      setError("Please complete the reCAPTCHA");
+      return;
+    }
+
+    login2({email: data.email, password: data.password, captcha: recaptchaToken})
       .unwrap()
       .then(() => {
         setError(undefined);
@@ -53,7 +64,7 @@ export default function LoginForm() {
         setSuccess(undefined);
         setError(e.data.detail || "There was an error while login, please try again");
       });
-      
+
   });
 
   return (
@@ -120,6 +131,13 @@ export default function LoginForm() {
           Did you forget your password?{" "}
           <Link href={"/auth/password-reset"}>Reset password here</Link>
         </p>
+
+        <div className={`${styles.auth__recaptcha} recaptcha-container`}>
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            onChange={handleCaptchaChange}
+          />
+        </div>
         <FormError message={error} />
         <FormSuccess message={success} />
         <Button type="submit" disabled={isLoading}> {isLoading ? <Loader color="white"/> : "Log in"}</Button>
@@ -141,8 +159,8 @@ export default function LoginForm() {
         )}
         onClick={continueWithGoogle}
       >
-      Log in with Google 
-    </Button>
+        Log in with Google
+      </Button>
       <div></div>
     </div>
   );
