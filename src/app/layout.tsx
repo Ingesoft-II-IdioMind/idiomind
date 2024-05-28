@@ -43,7 +43,7 @@ export default function RootLayout({
       <body
         className={`${myFont2.variable} ${myFont3.variable} ${myFont4.variable}`}
       >
-        {/* <SmoothScrolling> */}
+
         <Provider>
         <SidebarProvider>
           <Setup />
@@ -51,7 +51,6 @@ export default function RootLayout({
           {children}
           </SidebarProvider>
         </Provider>
-        {/* </SmoothScrolling> */}
       </body>
     </html>
   );
