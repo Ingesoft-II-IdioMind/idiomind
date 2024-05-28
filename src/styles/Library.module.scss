@@ -1,0 +1,65 @@
+@import "./variables.scss";
+
+.libraryContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .searchDocument {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+
+        .searchBar {
+            display: flex;
+            width: 30rem;
+            align-items: center;
+        }
+
+        button {
+            width: fit-content;
+        }
+    }
+
+    .documentsContainer {
+        margin: 1rem 0px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        align-items: flex-start;
+        align-content: flex-start;
+        gap: 2rem;
+        flex-wrap: wrap;
+
+        @media screen and (max-width: 800px) {
+            flex-direction: column;  // Agregamos esta línea para cambiar la dirección a columna
+            align-items: center;     // Centramos los elementos horizontalmente
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .libraryContainer {
+        .searchDocument {
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+
+            button {
+                width: fit-content;
+            }
+
+            .searchIcon {
+                display: none;
+            }
+
+            .searchBar {
+                width: auto;
+            }
+        }
+    }
+}

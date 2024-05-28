@@ -1,0 +1,59 @@
+@import "../../../../styles/variables.scss";
+
+.divfaq{
+    padding-bottom: 2rem;
+}
+
+.faq{
+    padding: 1.4rem 0px;
+    border-bottom: 2px solid $primary-color;
+    &__question{
+        border: none;
+        background: none;
+        text-decoration: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2.5rem;
+        width: 100%;
+        h5{
+            text-align: start;
+            font-weight: 700;
+            font-size: 1.8rem;
+            font-family: $second-font;
+            color: $primary-color;
+        }
+        svg{
+            fill: $primary-color;
+            width: 2rem;
+            height: 2rem;
+            flex-shrink: 0;
+        }
+    }
+    &__answer{
+        display: flex;
+        opacity: 1;
+        transition: opacity 0.3s ease, max-height 0.3s ease;
+        padding: 1rem 0px 1rem 2.5rem;
+        
+        p{
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        &__clossed{
+            display: none;
+            max-height: 0;
+        }
+        
+    }
+}
+
+.iconInnactive{
+    transform: rotate(0deg);
+    transition: transform 0.3s ease; 
+}
+
+.iconActive{
+    transform: rotate(180deg);
+    transition: transform 0.3s ease; 
+}

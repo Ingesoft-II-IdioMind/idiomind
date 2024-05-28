@@ -1,0 +1,65 @@
+@import "../../../styles/variables.scss";
+
+.navDocument{
+    min-height: 6.7rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    &__title{
+        color: $primary-color;
+    }
+    svg{
+        height: 2.5rem;
+        width: 2.5rem;
+        fill: $primary-color;
+        cursor: pointer;
+    }
+    h2{
+        text-align: center;
+    }
+}
+
+.dropdownMenu {
+    background-color: $main-color;
+    position: absolute;
+    top: calc(clamp(65px, 1.5vw, $navbar-height) + 6rem);
+    right: $lateral-padding;
+    box-shadow: 0px 1px 30.1px -2px rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+    margin: 0px;
+    padding: 0px;
+    z-index: 10;
+    li{
+        display: flex;
+        align-items: center;
+        height: fit-content;
+        font-size: 16px;
+        padding: 1.2rem 2rem;
+        border-radius: 1rem;
+        font-family: $second-font;
+        font-size: clamp(16px, 1vw, 18px);;
+        color: $black-color;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        // border-bottom: 1px solid $primary-color;
+        &:hover{
+            background-color: $primary-color;
+            color: $main-color;
+            transition: all 0.3s ease-in-out;
+        }
+        &::after {
+            /* Add this pseudo-element to create the border */
+            content: "";
+            position: absolute;
+            left: 10%; /* Adjust as needed */
+            right: 10%; /* Adjust as needed */
+            bottom: 0;
+            border-bottom: 1.5px solid #ffd4a9;
+          }
+    }
+  }

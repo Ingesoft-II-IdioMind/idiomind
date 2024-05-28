@@ -1,0 +1,16 @@
+.notFound{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    &__image{
+        position: relative;
+        height: 30vh;
+        width: 50vw;
+    }
+    h1{
+        font-size: 6rem;
+    }
+}

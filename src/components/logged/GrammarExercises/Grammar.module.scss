@@ -1,0 +1,286 @@
+@import "../../../styles/variables.scss";
+
+.grammar {
+  &Container {
+    background-color: $main-color;
+    display: flex;
+    width: 100%;
+    max-width: 50rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-self: center;
+    padding: 2rem 4rem;
+    box-shadow: 4px 7px 19px -5px rgba(0, 0, 0, 0.25);
+    border-radius: 32px;
+    margin-bottom: 2rem;
+  }
+  &Lenguage {
+    display: flex;
+    flex-direction: row;
+    &Container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  &Section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+    &__title {
+      color: $primary-color;
+      font-family: $main-font;
+      font-size: 2.5rem;
+      font-weight: 700;
+      padding: 1rem 0px;
+      
+    }
+    &__exercise {
+      width: 95%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-left: 2rem;
+      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+      &Level {
+        background-color: $primary-color;
+        color: $main-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: $second-font;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 16px;
+        width: 2.5rem; // 2rem for the height + 2 * 1rem for the padding
+        height: 2.5rem;
+      }
+      &Name {
+        color: $black-color;
+        font-family: $second-font;
+        font-size: 1.5rem;
+        font-weight: 600;
+        // max-width: ;
+      }
+      svg {
+        width: 2rem;
+        height: 2rem;
+        fill: $primary-color;
+      }
+      &:hover {
+        border-radius: 1rem;
+        background-color: #e6722013;
+        transition: 0.2s ease-in-out;
+      }
+    }
+  }
+}
+
+.exercise{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  height: fit-content;
+  &__question{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: $second-font;
+    font-size: 1.7rem;
+    font-weight: 500;
+    color: $black-color;
+    margin-bottom: 0.5rem;
+  }
+  &__answerOptions{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+    border: none;
+    width: fit-content;
+  }
+  &__singleOption{
+    padding: 1rem 2rem;
+    font-family: $second-font;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 2rem;
+    margin: 0.3rem 0;
+    border: 2px solid $primary-color;
+    transition: 0.4s ease-in-out;
+  }
+  &__selected{
+    background-color: $primary-color;
+    color: $main-color;
+  }
+  &__notSelected{
+    background-color: $main-color;
+    color: $primary-color;
+    
+    &:hover{
+      background-color: $main-color-hover;
+      transition: 0.4s ease-in-out;
+    }
+  }
+  &__correctAnswer{
+    background-color: $green-color;
+    color: $main-color;
+    border: none;
+  }
+  &__wrongAnswer{
+    background-color: $red-color;
+    color: $main-color;
+    border:none;
+  }
+  &__check{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+    width: 50%;
+  }
+  &__explanation{
+    font-family: $second-font;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $black-color;
+    margin-top: 1rem;
+  }
+}
+
+.languageOptions{
+  position:absolute;
+  top: 100%; // Coloca el menú justo debajo del elemento padre
+  right: 0; // Alinea el menú con el lado izquierdo del elemento padre
+  background-color: $main-color;
+  border-radius: 1rem;
+  box-shadow: $shadow-effect;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  li{
+    margin: 0;
+  }
+  p{
+    font-family: $main-font;
+    font-size: 2rem;
+    font-weight: 800;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    border-radius: 1rem;
+    transition: 0.4s ease-in-out;
+    &:hover{
+      background-color: $primary-color;
+      color: $main-color;
+      transition: 0.4s ease-in-out;
+    }
+    svg{
+      width: 1rem;
+      height: 1rem;
+    
+    }
+  }
+}
+
+.english,
+.german, .spanish, .french, .italian {
+  user-select: none;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  h3{
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-right: 1rem;
+  }
+  .logo {
+    height: 3.5rem;
+    width: auto;
+  }
+  
+}
+
+.english {
+  color: $blue-color;
+  #optionsIcon {
+    fill: $blue-color;
+  }
+  #upperLogo {
+    fill: $blue-color;
+  }
+  #underLogo {
+    fill: $red-color;
+  }
+}
+
+.german {
+  color: $black-color;
+  #optionsIcon {
+    fill: $black-color;
+  }
+  #upperLogo {
+    fill: $red-color;
+  }
+  #underLogo {
+    fill: $yellow-color;
+  }
+}
+
+.italian {
+  color: $green-color;
+  #optionsIcon {
+    fill: $green-color;
+  }
+  #upperLogo {
+    fill: $red-color;
+  }
+  #underLogo {
+    fill: $green-color;
+  }
+}
+
+.french {
+  color: $red-color;
+  #optionsIcon {
+    fill: $red-color;
+  }
+  #upperLogo {
+    fill: $red-color;
+  }
+  #underLogo {
+    fill: $blue-color;
+  }
+}
+
+.iconInnactive {
+  height: 2.5rem;
+  width: auto;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.iconActive {
+  margin-left: 0.2rem;
+  height: 2.5rem;
+  width: auto;
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}

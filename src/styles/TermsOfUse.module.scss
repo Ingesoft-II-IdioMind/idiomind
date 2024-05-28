@@ -1,0 +1,49 @@
+@import "./variables.scss";
+
+.termsContainer {
+    background-color: #faf2ec;
+    width: auto;
+    margin: auto;
+    padding: 2rem 3rem;
+    display: grid; 
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 45px;
+    section{
+      h4{
+        margin-bottom: 1rem;
+      }
+      
+    }
+  }
+
+.termsContainer h4 {
+    color: $primary-color;
+    background-color: #faf2ec;
+  }
+  
+  .navigation ul {
+    list-style-type: none;
+    padding: 0;
+    li a {
+      font-family: $second-font;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $primary-color;
+      text-decoration: none;
+      display: block;
+      padding: 5px;
+      border-radius: 3px;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #e0e0e0;
+      }
+      &::before {
+        content: attr(data-number) ". ";
+        font-weight: bold;
+      }
+    }
+  }
+  
+  
+  

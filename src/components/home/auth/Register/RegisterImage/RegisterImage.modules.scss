@@ -1,0 +1,95 @@
+#RegisterImage {
+  display: flex;
+  width: 50%;
+  height: auto;
+  max-height: 600px;
+}
+
+@media screen and (max-width: 900px) {
+  #RegisterImage {
+    display: none;
+  }
+}
+
+#background {
+  animation: introduceBackground 2s ease-in-out;
+}
+
+@keyframes introduceBackground {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#book1 {
+  animation: introduceBook 3s ease-in-out;
+}
+
+#book2 {
+  animation: introduceBook 3s ease-in-out;
+}
+
+#book3 {
+  animation: introduceBook 3s ease-in-out;
+}
+
+#book4 {
+  animation: introduceBook 3s ease-in-out;
+}
+
+@keyframes introduceBook {
+  from {
+    transform: translateY(-150px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#logor {
+  opacity: 0;
+  animation: runLogor 1s ease-in-out 2.2s forwards, moveUpAndDown 4s ease-in-out 5s infinite;
+}
+
+@keyframes runLogor {
+  from {
+    transform: translateX(-150px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+#headphones {
+  opacity: 0;
+  animation: putHeadphones 2s ease-in-out 3s forwards,
+    moveUpAndDown 4s ease-in-out 5s infinite;
+}
+
+@keyframes putHeadphones {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveUpAndDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

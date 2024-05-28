@@ -1,0 +1,1 @@
+export {ModuleFAQ} from "./ModuleFAQ"

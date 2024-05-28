@@ -1,0 +1,120 @@
+@import "../../../styles/variables.scss";
+
+.footer{
+    background-color: $primary-color;
+    width: calc(100% - 2*$lateral-padding);
+    min-height: $footer-height;
+    height: fit-content;
+    padding-right: $lateral-padding;
+    padding-left: $lateral-padding;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+    flex-direction: row;
+    padding: 0px $lateral-padding;
+    bottom: 0;
+    flex-shrink: 0;
+    //position: fixed;
+    box-shadow: 4px -3px 19px -5px rgba(0, 0, 0, 0.25);
+    z-index: 2;
+}
+
+.footer__logo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    text-decoration: none;
+    h6{
+        color: $main-color;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 91%
+    }
+    img{
+        width: 54px;
+        height: auto;
+    }
+}
+
+.footer__networks{
+    padding: 0px;
+    display:flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: row;
+    list-style: none;
+    flex-wrap: wrap;
+    li{
+        opacity: 1;
+        margin:4px;
+        transition: 0.3s ease-in-out;
+        &:hover{
+            opacity: 0.5;
+        }
+    }
+}
+
+.footer__items{
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    margin: 0;
+    height: auto;
+    li{
+        padding: 0px 16px;
+        display: flex;
+        align-items: center;
+        height: 50%;
+        list-style: none;
+        color: $black-color;
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: 1.2rem;
+        letter-spacing: -0.5px;
+    }
+}
+
+.footer__link{
+    padding: 1rem 1rem;
+    text-decoration: none;
+    font-family: $second-font;
+    color: $main-color;
+    font-size: 1.1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 91%;
+    transition: 0.3s ease-in-out;
+    &:hover{
+        color: $black-color
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .footer__logo{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap:8px;
+    }
+    .footer__networks{
+        width: fit-content;
+        margin: 0px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer__items{
+        width: fit-content;
+        li{
+            padding: 0px;
+        }
+    }
+}

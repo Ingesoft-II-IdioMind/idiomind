@@ -1,0 +1,59 @@
+@import "../../../styles/variables.scss";
+
+.button{
+    display: flex;
+    border: none;
+    width: 100%;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 33px;
+    font-family: $main-font;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: 0.3s ease-in-out;
+    &__primary{
+        background-color: $primary-color;
+        color: $main-color;
+        &:hover{
+            cursor: pointer;
+            opacity: 0.6;
+            transition: 0.3s ease-in-out;
+        }
+    }
+    &__secondary{
+        background-color: $main-color;
+        color: $primary-color;
+        box-sizing: border-box;
+        box-shadow: inset 0 0 0 2px $primary-color; /* Creates an "inner border" */
+        &:hover{
+            cursor: pointer;
+            // background-color: #e67220b0;
+            background-color: $primary-color;
+            color: $main-color;
+            transition: 0.3s ease-in-out;
+        }
+    }
+    &__round{
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+    }
+    @keyframes colorChange {
+        0% { background-color: #ff0000; }
+        50% { background-color: #00ff00; }
+        100% { background-color: #0000ff; }
+    }
+    
+    @keyframes sizeChange {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    &.recording {
+        animation: colorChange 2s infinite, sizeChange 1s infinite;
+
+    }
+}

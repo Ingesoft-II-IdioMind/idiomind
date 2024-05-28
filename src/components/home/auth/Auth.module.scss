@@ -1,0 +1,189 @@
+@import "../../../styles/variables.scss";
+
+.auth {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+  margin: 1rem 0px;
+  &__form {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0px;
+    height: 100%;
+    max-width: 30rem;
+    animation: slideInFromRight 2s ease-in-out;
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    &__logo {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: min-content;
+      text-decoration: none;
+      h1 {
+        color: $primary-color;
+        padding: 0px;
+      }
+      img {
+        height: 4rem;
+        width: auto;
+      }
+    }
+    &__resetPassword {
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+    }
+    &__register {
+      padding-top: 1rem;
+    }
+    p {
+      font-family: $second-font;
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 500;
+      color: $black-color;
+      a {
+        color: $primary-color;
+      }
+    }
+    &__error{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: #e6202026;
+      border-radius: 16px;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 1rem;
+      gap: 1rem;
+      svg{
+        fill: #e62020c0;
+        width: 1.6rem;
+        height: 1.6rem;
+      }
+      p{
+        max-width: 20rem;
+        font-family: $second-font;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 600;
+        color: #e62020c0;
+      }
+    }
+    &__success{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: #5be62026;
+      border-radius: 16px;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 1rem;
+      gap: 1rem;
+      svg{
+        fill: #16be2ac0;
+        width: 1.6rem;
+        height: 1.6rem;
+      }
+      p{
+        font-family: $second-font;
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 600;
+        color: #179226c0;
+      }
+    }
+    &__divider {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      font-family: $main-font;
+      font-size: 1.2rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 91%;
+      color: $primary-color;
+      text-align: center;
+      margin: 0.5rem 0px;
+      svg {
+        width: 43%;
+      }
+    }
+    &__names {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      div{
+         width: 100%;
+      }
+    }
+    &__terms {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-family: $second-font;
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 500;
+      color: $black-color;
+      margin-bottom: 0.8rem;
+      input {
+        opacity: 1;
+        cursor: pointer;
+        height: 1.5rem;
+        width: 1.5rem;
+        background-color: $primary-color;
+      }
+      a {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+.errorInput {
+  text-align: start;
+  font-family: $second-font;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 600;
+  color: red;
+  margin-bottom: 0.5rem;
+  //margin: 1rem 0px;
+}
+
+@media screen and (max-width: 806px) {
+  .auth {
+    justify-content: center;
+    height: fit-content;
+    &__form {
+      justify-content: start;
+      height: fit-content;
+    }
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

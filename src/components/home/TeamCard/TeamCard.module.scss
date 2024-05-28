@@ -1,0 +1,65 @@
+@import "../../../styles/variables.scss";
+
+.teamCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.3rem;
+  width: 17vw;
+  text-align: center;
+  margin: 1rem 1rem;
+  &__foto {
+    border-radius: 208px;
+    box-shadow: 4px 7px 19px -5px rgba(0, 0, 0, 0.25);
+    width: 82%;
+    height: auto;
+    object-fit: contain;
+  }
+  &__social{
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    a{
+      transition: 0.3s ease-in-out;
+    }:hover{
+      opacity: 0.5;
+    }
+  }
+  h5{
+    font-size: 1.5rem;
+    color:$black-color;
+    width: 100%;
+    font-weight: 600;
+  }
+  p{
+    color:$black-color;
+    font-family: $second-font;
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 101.5%;
+    width: 100%;
+  }
+}
+
+.teamCards{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 0px ;
+}
+
+@media screen and (max-width: 800px) {
+  .teamCard {
+    width: 40%;
+    &__social{
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

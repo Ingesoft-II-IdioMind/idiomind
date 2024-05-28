@@ -1,0 +1,237 @@
+@import "variables.scss";
+
+html {
+  width: 100vw;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+  font-size: clamp(13px, 1.2vw, 16px);
+}
+
+body {
+  background-color: $main-color;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+::-webkit-scrollbar {
+  position: fixed;
+  width: 10px; /* You can change the background color */
+  &-track {
+    background: $main-color; /* You can change the background color */
+    border-radius: 16px;
+  }
+  &-thumb {
+    background: $primary-color; /* You can change the thumb color */
+    border-radius: 16px;
+    &:hover {
+      background: #555;
+    }
+  }
+}
+
+h1 {
+  margin: 0px;
+  font-family: $main-font;
+  font-size: 4rem;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  line-height: 100%; /* 64px */
+  letter-spacing: -1.28px;
+  color: $primary-color;
+  padding: 1.5rem 0px;
+}
+
+h2 {
+  margin: 0px;
+  font-family: $main-font;
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 95.5%; /* 45.84px */
+  text-align: start;
+  color: $primary-color;
+  padding: 16px 0px;
+}
+
+h3 {
+  margin: 0px;
+  font-family: $main-font;
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: 600;
+  //line-height: 95.5%; /* 38.2px */
+}
+
+h4 {
+  margin: 0px;
+  font-family: $main-font;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  //line-height: 95.5%; /* 30.56px */
+}
+
+h5 {
+  margin: 0px;
+  font-family: $main-font;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  //line-height: 95%; /* 22.8px */
+}
+
+h6 {
+  margin: 0px;
+  font-family: $main-font;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  margin: 0px;
+  //line-height: 95%; /* 19px */
+}
+
+p {
+  margin: 0px;
+  font-family: $second-font;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  //line-height: 101.5%; /* 16.24px */
+}
+
+a {
+  margin: 0px;
+  color: $primary-color;
+  font-style: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  padding: 0px $lateral-padding;
+}
+
+.ST {
+  font-family: $second-font;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 118.3%;
+  text-align: start;
+}
+
+.BB {
+  font-family: $second-font;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 118.3%;
+  text-align: start;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+.center{
+  text-align: center;
+}
+
+select{
+  width: 95%;
+  height: 2.5rem;
+  background-color: transparent;
+  padding: 0px 1rem;
+  border: none;
+  font-family: $second-font;
+  font-size: 1rem;
+  font-weight: 500;
+
+}
+
+select option {
+  background-color: $main-color; /* Change this to your desired color */
+  color: $black-color; /* Change this to your desired color */
+  font-family: Arial;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+textarea{
+  width: 95%;
+  background-color: transparent;
+  padding: 0.3rem;
+  border: none;
+  font-family: $second-font;
+  font-size: 1rem;
+  font-weight: 500;
+
+}
+
+@media screen and (max-width: 1000px) {
+  h1{
+    font-size: 40px;
+  }
+  h2{
+    font-size: 32px;
+  }
+  h3{
+    font-size: 24px;
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+.Toastify__toast--success {
+  font-family: $second-font;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.Toastify__toast--error {
+  font-family: $second-font;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: $main-color;
+}
+
+audio::-webkit-media-controls-mute-button {
+  background-color: $main-color-hover;
+  border-radius: 50%;
+}
+
+audio::-webkit-media-controls-play-button {
+  background-color: $main-color-hover;
+  border-radius: 50%;
+}
+
+
+audio::-webkit-media-controls-time-remaining-display {
+  color: $primary-color;
+}
+
+audio::-webkit-media-controls-timeline {
+  background-color: $main-color-hover;
+  border-radius: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+}

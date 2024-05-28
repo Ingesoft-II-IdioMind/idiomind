@@ -1,0 +1,22 @@
+.speakingButtons {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 228px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+}
+
+.audio {
+  width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+  &Bar{
+    width: 80%;
+  }
+}

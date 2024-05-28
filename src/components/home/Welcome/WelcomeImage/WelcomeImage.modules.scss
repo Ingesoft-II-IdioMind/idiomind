@@ -1,0 +1,92 @@
+#MainBox {
+  width: 50%;
+  height: auto;
+}
+
+@media screen and (max-width: 806px) {
+  #MainBox {
+    padding-top: 24px;
+    width: 100%;
+  }
+}
+
+#Logo {
+  animation: introduceLogo 2s ease-in-out;
+  // transition: all 1s ease;
+  // animation-name: introduce;
+  // animation-duration: 4s;
+  // animation-direction: reverse;
+  // animation-delay: 2s;
+  // animation-iteration-count: 3;
+}
+
+@keyframes introduceLogo {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+#leftEye, #rightEye {
+  animation: blink 2s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes blink {
+  0%{
+    transform: scaleY(0.5);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+#Book {
+  opacity: 0;
+  animation: appearBook 2s 2s forwards;
+}
+
+@keyframes appearBook {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#salutBubble, #Salut {
+  opacity: 0;
+  animation: appearBubbles 10s 3s infinite; /* 2s for animation, 5s for delay */
+}
+
+#ciaoBubble, #Ciao {
+  opacity: 0;
+  animation: appearBubbles 10s 4s infinite; /* 2s for animation, 5s for delay */
+}
+
+#englishBubble, #Hello {
+  opacity: 0;
+  animation: appearBubbles 10s 5s infinite; /* 2s for animation, 5s for delay */
+}
+
+#germanBubble, #Hallo {
+  opacity: 0;
+  animation: appearBubbles 10s 6s infinite; /* 2s for animation, 5s for delay */
+}
+
+@keyframes appearBubbles {
+  0%, 30% { /* 28% of 7s is approximately 2s */
+    opacity: 0;
+  }
+  30%, 70% { /* The element stays visible for the remaining time */
+    opacity: 1;
+  }
+  70%, 100% {
+    opacity: 0;
+  }
+}

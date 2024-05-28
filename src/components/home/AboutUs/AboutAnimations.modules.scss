@@ -1,0 +1,149 @@
+#escalera1 {
+  animation: appearEscalera 4s ease-in-out;
+}
+#escalera2 {
+  animation: appearEscalera 3s ease-in-out;
+}
+#escalera3 {
+  animation: appearEscalera 2s ease-in-out;
+}
+#escalera4 {
+  animation: appearEscalera 1s ease-in-out;
+}
+
+@keyframes appearEscalera {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#logo {
+  opacity: 0;
+  animation: jumpLogo 4s ease-in-out 2s forwards,
+    movingLogo 3s ease-in-out infinite 7s forwards alternate-reverse;
+}
+
+@keyframes jumpLogo {
+  0% {
+    transform: translateX(-100px) translateY(100px);
+    opacity: 0;
+  }
+  70% {
+    transform: translateX(50px) translateY(-50px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0px) translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes movingLogo {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(15px);
+  }
+}
+
+#Bandera {
+  opacity: 0;
+  animation: appearEscalera 1s ease-in-out 5s forwards;
+}
+
+@keyframes appearBandera {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ANIMATIONS MISION
+
+#piece4 {
+  animation: appearPiece4 2s ease-in-out;
+}
+
+@keyframes appearPiece4 {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+#piece3 {
+  opacity: 0;
+  animation: appearPiece3 2s ease-in-out 2s forwards;
+}
+
+@keyframes appearPiece3 {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+#piece1 {
+    opacity: 0;
+    animation: appearPiece1 2s ease-in-out 4s forwards;
+  }
+  
+  @keyframes appearPiece1{
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+
+  #piece2 {
+    opacity: 0;
+    animation: appearPiece2 2s ease-in-out 6s forwards;
+  }
+  
+  @keyframes appearPiece2{
+    from {
+      transform: translateX(-50px) translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0px) translateY(0px);
+      opacity: 1;
+    }
+  }
+
+#logom{
+    opacity: 0;
+    animation: appearLogom 2s ease-in-out 7s forwards,
+    movingLogo 3s ease-in-out infinite 9s forwards alternate-reverse;
+}
+
+@keyframes appearLogom{
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+

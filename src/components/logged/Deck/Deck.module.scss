@@ -1,0 +1,99 @@
+@import "../../../styles/variables.scss";
+
+.deckNav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 2.7rem;
+    border-radius: 22px;
+    background-color: $main-color;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+    &:hover{
+        background-color: $main-color-hover;
+        transition: ease-in-out 0.2s;
+    }
+    &__options{
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        align-items: center;
+        justify-content: center;
+        p{
+            font-size: 1.2rem;
+        }
+    }
+    &__name{
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: $black-color;
+    }
+    &__dropdown{
+        position: absolute;
+        background-color: $main-color;
+        list-style: none;
+        border-radius: 1rem;
+        padding: 0px;
+        margin: 0px;
+        margin-top: 15rem;
+        right: $lateral-padding;
+        z-index: 2;
+        box-shadow: $shadow-effect;
+        li {
+            display: flex;
+        align-items: center;
+        height: fit-content;
+        font-size: 16px;
+        padding: 1.2rem 2rem;
+        border-radius: 1rem;
+        font-family: $second-font;
+        font-size: clamp(16px, 1vw, 18px);;
+        color: $black-color;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        // border-bottom: 1px solid $primary-color;
+        &:hover{
+            background-color: $primary-color;
+            color: $main-color;
+            transition: all 0.3s ease-in-out;
+        }
+        &::after {
+            /* Add this pseudo-element to create the border */
+            content: "";
+            position: absolute;
+            left: 10%; /* Adjust as needed */
+            right: 10%; /* Adjust as needed */
+            bottom: 0;
+            border-bottom: 1.5px solid #ffd4a9;
+          }
+        }
+
+    }
+    
+}
+
+.decksTitle{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    svg{
+        margin-left: 2rem;
+        height: 3rem;
+        width: 7rem;
+        fill: $primary-color;
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+        :hover{
+            fill: $secondary-color;
+            transition: ease-in-out 0.2s;
+        }
+    }
+}

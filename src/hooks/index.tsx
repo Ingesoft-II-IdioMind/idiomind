@@ -1,0 +1,1 @@
+export { default as useSocialAuth } from './use-social-auth';

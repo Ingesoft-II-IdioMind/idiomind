@@ -1,0 +1,96 @@
+@import "../../../styles/variables.scss";
+
+.profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  &Content {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    animation: slideInFromRight2 2s ease-in-out;
+    margin-bottom: 2rem;
+  }
+}
+
+.userData {
+  width: 100%;
+  max-width: 30rem;
+  padding: 0px;
+}
+
+.userOptions {
+  z-index: 4;
+  width: 95%;
+  height: fit-content;
+  display: flex;
+  max-width: 28rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  border-radius: 2rem;
+  background-color: $primary-color;
+  box-shadow: 4px 7px 19px -5px rgba(0, 0, 0, 0.25);
+  // border: 
+  li {
+    width: 100%;
+    // background-color: $primary-color;
+    font-family: $main-font;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $main-color;
+    transition: 0.3s ease-in-out;
+    padding: 1.2rem  0px;
+    &:not(:last-child) {
+      border-bottom: 2px solid $main-color;
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: $main-color;
+      color: $primary-color;
+      transition: 0.3s ease-in-out;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .profileContent {
+    flex-direction: column;
+    margin-top: 0px;
+    width: 100%;
+  }
+  .userData {
+    width: 100%;
+  }
+  .userOptions {
+    width: 100%;
+  }
+}
+
+@keyframes slideInFromRight2 {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.link{
+  color: $main-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  &:hover{
+    color: $primary-color;
+  }
+}

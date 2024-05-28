@@ -1,0 +1,180 @@
+@import "../../../styles/variables.scss";
+
+.welcomeBanner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 0px;
+    height: fit-content;
+    min-height: 65vh;
+    img{
+        size: 50px;
+    }
+    &__Message{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        animation: slideInFromLeft 2s ease-in-out;
+        p{
+            color: $primary-color;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+        }
+        h2{
+            color: $black-color;
+            padding-right: 23px;
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.reasons{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0px;
+    &__block{
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        gap:2rem;
+        margin-bottom: 2rem;
+        div{
+            background-color: $primary-color;
+            border-radius: 42px;
+            color: $main-color;
+            font-family: $second-font;
+            font-size: 1.3rem;
+            font-style: normal;
+            font-weight: 700;
+            max-width: 250px;
+            min-height: 159px;
+            padding: 0px 25px;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin: 0px;
+        }
+    }
+}
+
+.firstMessage{
+    margin-left: -$lateral-padding;
+    margin-right: -$lateral-padding;
+    padding: 32px  $lateral-padding;
+    background-color: $primary-color;
+    color: $main-color;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    &__icon{
+        margin-right: 32px;
+        height: 10rem;
+        fill: $main-color;
+    }
+    h3{
+        max-width: 1000px;
+        color: $main-color;
+        text-align: center;
+    }
+}
+
+.secondMessage{
+    margin-left: -$lateral-padding;
+    margin-right: -$lateral-padding;
+    padding: 32px  $lateral-padding;
+    background-color: rgba(230, 115, 32, 0.20);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $black-color;
+    text-align: center;
+    h5{
+        max-width: 1000px;
+        font-family: $second-font;
+        
+    }
+    &__author{
+        color: $primary-color;
+        font-family: $main-font;
+    }
+}
+
+.noStyles{
+    text-decoration: none;
+}
+
+.left{
+    text-align: left;
+}
+
+// @media screen and (max-width: 1300px) {
+//     .welcomeBanner{
+//         min-height: 60vh;
+//     }
+// }
+
+@media screen and (max-width: 806px) {
+    .welcomeBanner{
+        flex-direction: column;
+        min-height: 10vh;
+        justify-content: start ;
+        margin-bottom: 2rem;
+        &__Message{
+            width: 100%;
+            align-items: center;
+            text-align: center;
+            p{
+                font-size: 20px;
+            }
+            h2{
+                padding-right: 0px;
+                text-align: center;
+            }
+        }
+    }
+
+    .firstMessage{
+        flex-direction: column;
+        &__icon{
+            height: 6rem;
+            margin-right: 0px;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 706px) {
+    .reasons{
+        img{
+            display: none;
+        }
+        &__block{
+            flex-direction: column;
+            div{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }

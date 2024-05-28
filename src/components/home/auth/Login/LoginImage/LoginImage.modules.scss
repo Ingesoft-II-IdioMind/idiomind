@@ -1,0 +1,59 @@
+#LoginImage{
+    display:flex;
+    width: 50%;
+    height: auto;
+    max-height: 600px;
+}
+
+@media screen and (max-width: 900px) {
+    #LoginImage{
+        display: none;
+    }
+}
+
+#world{
+    animation: introduceWorld 2s ease-in-out;
+}
+
+@keyframes introduceWorld {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#bubble1{
+    animation: appearBubbles 10s 2s infinite;
+    opacity: 0;
+}
+
+#bubble2{
+    opacity: 0;
+    animation: appearBubbles 10s 3s infinite;
+}
+
+#bubble3{
+    opacity: 0;
+    animation: appearBubbles 10s 4s infinite;
+}
+
+#bubble4{
+    opacity: 0;
+    animation: appearBubbles 10s 5s infinite;
+}
+
+@keyframes appearBubbles {
+    0%, 30% { /* 28% of 7s is approximately 2s */
+      opacity: 0;
+    }
+    30%, 70% { /* The element stays visible for the remaining time */
+      opacity: 1;
+    }
+    70%, 100% {
+      opacity: 0;
+    }
+  }

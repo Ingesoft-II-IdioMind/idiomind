@@ -1,0 +1,293 @@
+@import "../../../styles/variables.scss";
+
+$size-font-navbar: clamp(16px, 1vw, 20px);
+
+.navbar {
+  z-index: 1;
+  background-color: $main-color;
+  width: calc(100% - 2 * $lateral-padding);
+  padding-right: $lateral-padding;
+  padding-left: $lateral-padding;
+  height: clamp(65px, 1.5vw, $navbar-height);
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 1px 30.1px -2px rgba(0, 0, 0, 0.25);
+  &__logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    text-decoration: none;
+    h5 {
+      font-size: 1.5rem;
+      color: $primary-color;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: -1.2px;
+    }
+    img {
+      min-width: 30px;
+      max-width: 70px;
+      width: 25%;
+      height: auto;
+    }
+    svg {
+      margin-left: 0.5rem;
+      width: 1.5rem;
+      height: auto;
+      fill: $primary-color;
+    }
+  }
+
+  &__items,
+  &__itemsActive {
+    display: flex;
+    padding: 0px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    li {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      list-style: none;
+      color: $black-color;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 100%;
+    text-align: center;
+    text-decoration: none;
+    font-family: $second-font;
+    font-size: $size-font-navbar;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.4px;
+    color: $black-color;
+    transition: 0.3s ease-in-out;
+    &:hover,
+    &--active {
+      color: $primary-color;
+      border-bottom: 2px solid $primary-color;
+    }
+    &__log {
+      font-size: 1.1rem;
+      font-family: $second-font;
+      font-weight: 800;
+      padding: 12px 16px;
+      height: auto;
+      color: $main-color;
+      border-radius: 32px;
+      background-color: $primary-color;
+      margin-right: 8px;
+      &:hover {
+        border-bottom: 0px;
+        opacity: 0.5;
+        color: $main-color;
+      }
+    }
+    &__sign {
+      font-size: 1.1rem;
+      font-family: $second-font;
+      font-weight: 800;
+      color: $primary-color;
+      display: inline-flex;
+      padding: 10px 16px;
+      height: auto;
+      border-color: $primary-color;
+      border-radius: 32px;
+      border: 2px solid var(--Primary, #e67320);
+      &:hover {
+        background-color: $primary-color;
+        color: $main-color;
+      }
+    }
+  }
+  &__mobile {
+    display: none;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+.dropDown {
+  position: absolute;
+  background-color: $main-color;
+  left: $lateral-padding;
+  top: clamp(65px, 1.5vw, $navbar-height);
+  padding: 0px;
+  margin: 0px;
+  box-shadow: 0px 1px 30.1px -2px rgba(0, 0, 0, 0.25);
+  border-radius: 1rem;
+  animation: slideDown 0.5s ease-in-out;
+  a {
+    font-family: $second-font;
+    font-size: $size-font-navbar;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    color: $black-color;
+    transition: 0.6s ease-in-out;
+    &:hover {
+      li {
+        border-radius: 1rem;
+        background-color: $primary-color;
+        transition: 0.6s ease-in-out;
+        color: $main-color;
+        font-weight: 800;
+      }
+    }
+  }
+  li {
+    list-style: none;
+    color: $black-color;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.5px;
+    padding: 1rem 3.5rem;
+    text-align: center;
+    position: relative; /* Add this to position the pseudo-element relative to the li */
+    transition: 0.6s ease-in-out;
+
+    &::after {
+      /* Add this pseudo-element to create the border */
+      content: "";
+      position: absolute;
+      left: 20%; /* Adjust as needed */
+      right: 20%; /* Adjust as needed */
+      bottom: 0;
+      border-bottom: 1px solid $primary-color;
+    }
+  }
+  &__active {
+    transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+  }
+  &__innactive {
+    animation: slideDown 0.5s ease-in-out reverse;
+    display: none;
+    opacity: 0;
+  }
+}
+
+.iconInnactive {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.iconActive {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+@media screen and (max-width: 806px) {
+  .navbar {
+    align-items: start;
+    justify-items: end;
+    &__items {
+      align-items: center;
+      justify-content: center;
+      display: none;
+      transition: 0.3s ease-in-out;
+      &Active {
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        background: $main-color;
+        width: 80%;
+        height: auto;
+        margin-bottom: 0.25rem;
+        margin-top: clamp(65px, 1.5vw, $navbar-height);
+        box-shadow: 0px 1px 30.1px -2px rgba(0, 0, 0, 0.25);
+        li {
+          height: auto;
+          list-style: none;
+        }
+      }
+    }
+
+    &__link,
+    &__link__log,
+    &__link__sign {
+      margin: 0px;
+      padding: 16px 0;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid $black-color;
+      color: $black-color;
+      background-color: $main-color;
+      border-style: none;
+      border-radius: 0px;
+      border-bottom: 2px solid $primary-color;
+      transition: transform 0.3s ease;
+      &:hover {
+        background-color: #e6722020;
+        color: $primary-color;
+        transition: transform 0.3s ease;
+      }
+    }
+
+    &__mobile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: 100%;
+      &__icon {
+        position: absolute;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+    
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
