@@ -59,6 +59,7 @@ export default function LoginForm() {
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
   } = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
       defaultValues: {
@@ -76,10 +77,12 @@ export default function LoginForm() {
         .then((data) => {
           if (data?.error) {
             setError(data.error);
+            reset();
           }
 
           if (data?.success) {
             setSuccess(data.success);
+            reset();
           }
 
           if (data?.twoFactor) {
