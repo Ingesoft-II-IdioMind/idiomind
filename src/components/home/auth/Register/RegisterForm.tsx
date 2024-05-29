@@ -16,6 +16,8 @@ import { continueWithGoogle } from "app/utils";
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
 
+import DOMPurify from 'dompurify';
+
 type FormInputs = {
   first_name: string;
   last_name: string;
@@ -45,15 +47,25 @@ export default function RegisterForm() {
   const confirmPassword = watch("re_Password");
 
   const onSubmit = handleSubmit((data: any) => {
-    if (data.last_name === "") {
-      data.last_name = "none";
+    // Sanea los datos del formulario
+    const sanitizedData = {
+      first_name: DOMPurify.sanitize(data.first_name),
+      last_name: DOMPurify.sanitize(data.last_name),
+      email: DOMPurify.sanitize(data.email),
+      password: DOMPurify.sanitize(data.password),
+      re_Password: DOMPurify.sanitize(data.re_Password),
+    };
+  
+    if (sanitizedData.last_name === "") {
+      sanitizedData.last_name = "none";
     }
+  
     register2({
-      first_name: data.first_name,
-      last_name: data.last_name,
-      email: data.email,
-      password: data.password,
-      re_password: data.password,
+      first_name: sanitizedData.first_name,
+      last_name: sanitizedData.last_name,
+      email: sanitizedData.email,
+      password: sanitizedData.password,
+      re_password: sanitizedData.password,
     })
       .unwrap()
       .then(() => {
@@ -64,15 +76,15 @@ export default function RegisterForm() {
       })
       .catch((e) => {
         setSuccess(undefined);
-        // if (e.data && e.data.password) {
-        //   setError(e.data.password.join(" "));
-        // } else if (e.data && e.data.email) {
-        //   setError(e.data.email.join(" "));
-        // } else {
+        if (e.data && e.data.password) {
+          setError(e.data.password.join(" "));
+        } else if (e.data && e.data.email) {
+          setError(e.data.email.join(" "));
+        } else {
           setError(
-              "There was an error while registering, please try again"
+            "There was an error while registering, please try again"
           );
-        // }
+        }
       });
   });
 
@@ -130,10 +142,10 @@ export default function RegisterForm() {
                 value: true,
                 message: "*Email is required",
               },
-              // pattern: {
-              //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              //   message: "*Invalid email address",
-              // },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: "*Invalid email address",
+              },
             })}
             className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
             placeholder="user@email.com"
@@ -150,14 +162,14 @@ export default function RegisterForm() {
                 value: true,
                 message: "*Password is required",
               },
-              // minLength: {
-              //   value: 8,
-              //   message: "*Password must have at least 8 characters",
-              // },
-              // pattern: {
-              //   value: /\d/,
-              //   message: "*Password must contain at least one number",
-              // },
+              minLength: {
+                value: 8,
+                message: "*Password must have at least 8 characters",
+              },
+              pattern: {
+                value: /\d/,
+                message: "*Password must contain at least one number",
+              },
             })}
             placeholder="******"
           />
@@ -182,7 +194,7 @@ export default function RegisterForm() {
         {errors.password && (
           <span className={styles.errorInput}>{errors.password.message}</span>
         )}
-        {/* <TextField label="Confirm password*">
+        <TextField label="Confirm password*">
           <input
             type={visiblePassword2 ? "text" : "password"}
             {...register("re_Password", {
@@ -217,17 +229,17 @@ export default function RegisterForm() {
           <span className={styles.errorInput}>
             {errors.re_Password.message}
           </span>
-        )}*/}
+        )}
         <label className={styles.auth__form__terms}>
           <input
             type="checkbox"
-            // {...register("terms", {
-            //   required: {
-            //     value: true,
-            //     message:
-            //       "*You have to accept the terms and conditions to continue",
-            //   },
-            // })}
+            {...register("terms", {
+              required: {
+                value: true,
+                message:
+                  "*You have to accept the terms and conditions to continue",
+              },
+            })}
           />
           <p>
             {" "}

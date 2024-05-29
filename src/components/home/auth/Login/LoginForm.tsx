@@ -18,6 +18,8 @@ import { Loader } from "app/components/shared/Loader";
 import { toast } from "react-toastify";
 import { continueWithGoogle } from "app/utils";
 
+import DOMPurify from 'dompurify';
+
 type FormInputs = {
   email: string;
   password: string;
@@ -40,7 +42,10 @@ export default function LoginForm() {
 
   const onSubmit = handleSubmit((data) => {
 
-    login2({email: data.email, password: data.password})
+    const sanitizedEmail = DOMPurify.sanitize(data.email);
+    const sanitizedPassword = DOMPurify.sanitize(data.password);
+    login2({ email: sanitizedEmail, password: sanitizedPassword })
+
       .unwrap()
       .then(() => {
         setError(undefined);
@@ -53,7 +58,6 @@ export default function LoginForm() {
         setSuccess(undefined);
         setError(e.data.detail || "There was an error while login, please try again");
       });
-      
   });
 
   return (
@@ -72,10 +76,10 @@ export default function LoginForm() {
                 value: true,
                 message: "*Email is required",
               },
-              // pattern: {
-              //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              //   message: "*Invalid email address",
-              // },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: "*Invalid email address",
+              },
             })}
             placeholder="user@email.com"
           />

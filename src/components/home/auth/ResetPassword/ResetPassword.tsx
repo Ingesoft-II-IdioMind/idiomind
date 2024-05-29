@@ -10,6 +10,8 @@ import { FormSuccess } from "../FormSuccess";
 import { Loader } from "app/components/shared/Loader";
 import { FormError } from "../FormError";
 
+import DOMPurify from 'dompurify';
+
 type FormInputs = {
   email: string;
   password: string;
@@ -29,7 +31,8 @@ export default function ResetPasswordForm() {
   //const router = useRouter()
 
   const onSubmit = handleSubmit((data) => {
-    resetPassword2(data.email)
+    const sanitizedEmail = DOMPurify.sanitize(data.email);
+    resetPassword2(sanitizedEmail)
     .unwrap()
     .then(() => {
       setError(undefined);
@@ -57,10 +60,10 @@ export default function ResetPasswordForm() {
                 value: true,
                 message: "*Email is required",
               },
-              // pattern: {
-              //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              //   message: "*Invalid email address",
-              // },
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: "*Invalid email address",
+              },
             })}
             placeholder="user@email.com"
           />
