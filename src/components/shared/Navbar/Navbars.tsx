@@ -9,7 +9,7 @@ export default function Navbars () {
     const { isAuthenticated } = useAppSelector(state => state.auth);
     const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
 
-    if (isAuthenticated && user?.first_name != undefined){
+    if (isAuthenticated && user?.name != undefined){
         return(<NavbarLogged/>);
     }
     return(<Navbar/>);

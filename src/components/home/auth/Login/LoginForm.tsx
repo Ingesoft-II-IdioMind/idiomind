@@ -18,11 +18,15 @@ import { useLoginMutation } from "app/redux/features/authApiSlice";
 import { FormSuccess } from "../FormSuccess";
 import { useAppDispatch } from "app/redux/hooks";
 import { setAuth } from "app/redux/features/authSlice";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader } from "app/components/shared/Loader";
 import { toast } from "react-toastify";
 import { continueWithGoogle } from "app/utils";
 import { login } from "../../../../../actions/login";
+import { DEFAULT_LOGIN_REDIRECT } from "../../../../../routes";
+import { signIn } from "../../../../../auth";
+import { Social } from "../social";
+import { formToJSON } from "axios";
 
 
 type FormInputs = {
@@ -31,11 +35,18 @@ type FormInputs = {
 };
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
+  ? "Email already in use with different provider!"
+  :"";
+
   const router = useRouter();
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
+  const callbackUrl = searchParams.get("callbackUrl");
   
   // const {
   //   register,
@@ -57,17 +68,27 @@ export default function LoginForm() {
     })
 
   const onSubmit: SubmitHandler<FormInputs> = (values: z.infer<typeof LoginSchema>) => {
-    startTransition(() => {
-      login(values)
-      .then((data) => {
-        if (data) {
-          setError(data.error);
-          // setSuccess(data.success);
-        }
-      })
-    })
+    setError("");
+    setSuccess("");
     
-  }
+    startTransition(() => {
+      login(values, callbackUrl)
+        .then((data) => {
+          if (data?.error) {
+            setError(data.error);
+          }
+
+          if (data?.success) {
+            setSuccess(data.success);
+          }
+
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
+          }
+        })
+        .catch(() => setError("Something went wrong"));
+    });
+  };
 
   return (
     <div className={styles.auth__form}>
@@ -76,6 +97,18 @@ export default function LoginForm() {
         <h2>Login</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
+      {showTwoFactor && (
+        <TextField label="Two Factor Code">
+        <input
+          type="code"
+          disabled={isPending}
+          id="code" {...register("code")}
+          placeholder="12345"
+        />
+      </TextField>
+      )}
+      {!showTwoFactor && (
+        <>
         <TextField label="E-mail">
           <input
             type="email"
@@ -119,16 +152,21 @@ export default function LoginForm() {
           Did you forget your password?{" "}
           <Link href={"/auth/password-reset"}>Reset password here</Link>
         </p>
-        <FormError message={error} />
+        </>)}
+        <FormError message={error || urlError} />
         <FormSuccess message={success} />
-        <Button type="submit" disabled={isPending}> {isPending ? <Loader color="white"/> : "Log in"}</Button>
-        <p className={styles.auth__form__register}>
+        <Button type="submit" disabled={isPending}> {isPending ? <Loader color="white"/> : showTwoFactor ? "Confirm" : "Login"}</Button>
+        {/* {showTwoFactor && (<Button onClick={() => setShowTwoFactor(false)} disabled={isPending}> {isPending ? <Loader color="white"/> : "Cancel"}</Button>)} */}
+        </form>
+        {!showTwoFactor && ( <><p className={styles.auth__form__register}>
           You dont have an account?{" "}
           <Link href={"/auth/register"}>Register here</Link>
         </p>
-      </form>
+      
       <FormDivider />
-      <Button
+      <Social />
+      </>)}
+      {/* <Button
         haveIcon={true}
         Icon={() => (
           <Image
@@ -138,10 +176,10 @@ export default function LoginForm() {
             height={25}
           />
         )}
-        onClick={continueWithGoogle}
+        onClick={() => onClick("google")}
       >
       Log in with Google 
-    </Button>
+    </Button> */}
       <div></div>
     </div>
   );

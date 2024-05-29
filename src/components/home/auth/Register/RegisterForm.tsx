@@ -21,7 +21,7 @@ import { RegisterSchema } from "app/schemas";
 import { register2 } from "../../../../../actions/register";
 
 type FormInputs = {
-  first_name: string;
+  name: string;
   last_name: string;
   email: string;
   password: string;
@@ -46,7 +46,7 @@ export default function RegisterForm() {
   } = useForm<z.infer<typeof RegisterSchema>>({
       resolver: zodResolver(RegisterSchema),
       defaultValues: {
-        first_name: "",
+        name: "",
         last_name: "",
         email: "",
         password: "",
@@ -97,9 +97,9 @@ export default function RegisterForm() {
         <div className={styles.auth__form__names}>
           <TextField label="First name*">
             <input
-              type="first_name"
+              type="name"
               placeholder="Jack"
-              id="first_name" {...register("first_name")}
+              id="name" {...register("name")}
               disabled={isPending}
             />
           </TextField>
@@ -112,8 +112,8 @@ export default function RegisterForm() {
             />
           </TextField>
         </div>
-        {errors.first_name && (
-          <span className={styles.errorInput}>{errors.first_name.message}</span>
+        {errors.name && (
+          <span className={styles.errorInput}>{errors.name.message}</span>
         )}
         <TextField label="E-mail*">
           <input

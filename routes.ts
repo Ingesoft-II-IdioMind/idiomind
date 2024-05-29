@@ -1,10 +1,12 @@
 export const publicRoutes = [  
-    "/"
+    "/",
+    "/auth/new-verification",
 ];
 
 export const authRoutes = [
     "/auth/login",
     "/auth/register",
+    "/auth/reset",
 ];
 
 export const protectedRoutes = [
@@ -13,4 +15,4 @@ export const protectedRoutes = [
 
 export const apiAuthPrefix = "/api/auth";
 
-export const DEFAULT_LOGIN_REDIRECT = "/logged";
+export const DEFAULT_LOGIN_REDIRECT = "/logged/profile";

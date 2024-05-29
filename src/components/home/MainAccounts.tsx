@@ -10,7 +10,7 @@
 //     <>
 //       {accounts?.map((product:any) => {
 //           return (
-//               <p>{product.first_name}</p>
+//               <p>{product.name}</p>
 //           )
 //         })}
 //     </>

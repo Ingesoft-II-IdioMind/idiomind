@@ -2,10 +2,12 @@
 
 import { RegisterSchema } from "app/schemas";
 import * as z from "zod";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "../lib/db";
 import { get } from "http";
 import { getUserByEmail } from "app/data/user";
+import { generateVerificationToken } from "../lib/tokens";
+import { sendVerificationEmail } from "../lib/mail";
 
 
 export const register2 = async (values: z.infer<typeof RegisterSchema>) => {
@@ -15,7 +17,7 @@ export const register2 = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Invalid fields!" };
   }
   
-  const { first_name, last_name, email, password } = validatedField.data;
+  const { name, last_name, email, password } = validatedField.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
@@ -26,14 +28,19 @@ export const register2 = async (values: z.infer<typeof RegisterSchema>) => {
 
   await db.user.create({
     data: {
-      first_name,
+      name,
       last_name,
       email,
       password: hashedPassword,
     },
   });
 
-  // Send email
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(
+    verificationToken.email,
+    verificationToken.token,
+  );
+
 
   return { success: "Email send!" };
 };

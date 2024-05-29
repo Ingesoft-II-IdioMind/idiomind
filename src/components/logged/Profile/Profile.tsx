@@ -114,7 +114,7 @@ export default function ProfileContent() {
         <ul className={styles.userData}>
           <li>
             <TextField label="First Name">
-              <input type="text" disabled={true} value={user?.first_name} />
+              <input type="text" disabled={true} value={user?.name} />
             </TextField>
           </li>
           <li>

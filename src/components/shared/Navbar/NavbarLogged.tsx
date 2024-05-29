@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./Navbar.module.scss";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,29 +8,25 @@ import { useState } from "react";
 import { useAppSelector, useAppDispatch } from 'app/redux/hooks';
 import { useLogoutMutation, useRetrieveUserQuery } from 'app/redux/features/authApiSlice';
 import { logout as setLogout } from 'app/redux/features/authSlice';
+import { signOut } from "../../../../auth";
+import { logout } from "../../../../actions/logout";
+import { useCurrentUser } from "app/hooks/use-current-user";
 
 export default function NavbarLogged() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [configOpen, setConfigOpen] = useState(false);
-  const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
 
-  const dispatch = useAppDispatch();
-
-  const [logout] = useLogoutMutation();
-
-  const handleLogout = () => {
-    logout(undefined)
-      .unwrap()
-      .then(() => {
-        dispatch(setLogout());
-      });
+  const onClick = () => {
+    logout();
   };
+
+  const user = useCurrentUser();
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbar__logo}>
         <img src="/appLogo.svg" alt="IdioMind logo" />
-        <h5>{user?.first_name}</h5>
+        <h5>{user?.name}</h5> 
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
@@ -85,9 +82,12 @@ export default function NavbarLogged() {
         <Link href="/logged/contactUs" onClick={() => setConfigOpen(!configOpen)}>
           <li>Help</li>
         </Link>
-        <Link href="/auth/login" onClick={handleLogout}>
+        <span onClick={onClick}>
           <li>Log out</li>
-        </Link>
+        </span>
+        {/* <Link href="/auth/login" onClick={logout}>
+          <li>Log out</li>
+        </Link> */}
       </ul>
     </nav>
   );

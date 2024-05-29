@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { useAppSelector } from 'app/redux/hooks';
 import { Loader } from '../Loader';
+import { useCurrentUser } from 'app/hooks/use-current-user';
 
 interface Props {
 	children: React.ReactNode;
@@ -10,17 +11,10 @@ interface Props {
 
 export default function RequireAuth({ children }: Props) {
 	const { isLoading, isAuthenticated } = useAppSelector(state => state.auth);
+	const user = useCurrentUser();
 
-	if (isLoading) {
-		return (
-			<div className='flex justify-center my-8'>
-				<Loader color="naranja" />
-			</div>
-		);
-	}
-
-	if (isAuthenticated) {
-		console.log('Redirecting to logged');
+	if (user != null && user != undefined) {
+		// console.log('Redirecting to login');
 		redirect('/logged');
 	}
 

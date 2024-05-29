@@ -9,6 +9,9 @@ import { Navbars } from "app/components/shared/Navbar";
 import { Footer } from "app/components/shared/Footer";
 import { SidebarProvider } from "app/components/logged/Library/PDFViewer/SideBarProvider";
 import { db } from "../../lib/db";
+import { SessionProvider } from 'next-auth/react'
+import { auth } from "../../auth";
+
 
 const myFont3 = Quicksand({
   subsets: ["latin"],
@@ -34,13 +37,16 @@ export const metadata: Metadata = {
   icons: { icon: "/appLogo.svg" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
+  const session = await auth();
+
   return (
+    <SessionProvider session={session}>
     <html lang="en">
       <body
         className={`${myFont2.variable} ${myFont3.variable} ${myFont4.variable}`}
@@ -55,5 +61,6 @@ export default function RootLayout({
         </Provider>
       </body>
     </html>
+    </SessionProvider>
   );
 }

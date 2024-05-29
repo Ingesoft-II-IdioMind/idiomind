@@ -3,7 +3,7 @@ import { apiSlice } from '../services/apiSlice';
 //http://localhost:3000/auth/google?state=bPlGrzeDv9nbj6Pja3nBf2efhUPgK8Yq&code=4%2F0AeaYSHBuQBq18njR6qDOYYtkaDzy4bLoGKZBxBWiWpyj4gcXW04vtkiuBkpBrISakdBKVQ&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent
 
 interface User {
-	first_name: string;
+	name: string;
 	last_name: string;
 	email: string;
 }
@@ -46,7 +46,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 		}),
 		register: builder.mutation({
 			query: ({
-				first_name,
+				name,
 				last_name,
 				email,
 				password,
@@ -54,7 +54,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 			}) => ({
 				url: '/users/',
 				method: 'POST',
-				body: { first_name, last_name, email, password, re_password },
+				body: { name, last_name, email, password, re_password },
 			}),
 		}),
 		verify: builder.mutation({
