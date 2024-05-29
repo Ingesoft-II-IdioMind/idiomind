@@ -51,7 +51,7 @@ export default function LoginForm() {
       return;
     }
 
-    login2({email: data.email, password: data.password, captcha: recaptchaToken})
+    login2({email: data.email, password: data.password, recaptchaToken: recaptchaToken})
       .unwrap()
       .then(() => {
         setError(undefined);
