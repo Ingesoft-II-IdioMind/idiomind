@@ -26,7 +26,7 @@ export default function NavbarLogged() {
     <nav className={styles.navbar}>
       <div className={styles.navbar__logo}>
         <img src="/appLogo.svg" alt="IdioMind logo" />
-        <h5>{user?.name}</h5> 
+        <h5>{user?.name?.split(' ')[0] ?? ''}</h5> 
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"

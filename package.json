@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
+
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.1.0",
@@ -28,6 +30,7 @@
     "@studio-freight/lenis": "^1.0.42",
     "@studio-freight/react-lenis": "^0.0.46",
     "@types/bcryptjs": "^2.4.6",
+    "@types/react-google-recaptcha": "^2.1.9",
     "@types/react-pdf": "^7.0.0",
     "async-mutex": "^0.5.0",
     "axios": "^1.6.8",
@@ -45,6 +48,7 @@
     "react": "^18",
     "react-confetti-explosion": "^2.1.2",
     "react-dom": "^18",
+    "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.51.5",
     "react-pdf": "^7.7.1",
     "react-pdf-selection": "^0.2.0",

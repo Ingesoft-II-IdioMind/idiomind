@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { RegisterSchema } from "app/schemas";
 import { register2 } from "../../../../../actions/register";
+import { Social } from "../social";
 
 import DOMPurify from 'dompurify';
 
@@ -96,21 +97,7 @@ export default function RegisterForm() {
         <img src="/appLogo.svg" alt="IdioMind logo" />
         <h2>Sign up</h2>
       </div>
-      <Button
-        onClick={continueWithGoogle}
-        haveIcon={true}
-        Icon={() => (
-          <Image
-            src="/icons/googleColor.svg"
-            alt="Google icon"
-            width={30}
-            height={30}
-          />
-        )}
-      >
-        Sign up with google
-      </Button>
-      <FormDivider />
+      
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.auth__form__names}>
           <TextField label="First name*">
@@ -228,6 +215,8 @@ export default function RegisterForm() {
         You already have an account?{" "}
         <Link href={"/auth/login"}>Log in here</Link>
       </p>
+      <FormDivider />
+      <Social />
     </div>
   );
 }

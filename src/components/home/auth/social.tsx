@@ -37,8 +37,8 @@ export const Social = () => {
     haveIcon={true}
     Icon={() => (
       <Image
-        src="/icons/googleColor.svg"
-        alt="Google icon"
+        src="/icons/gitHub2.svg"
+        alt="Github icon"
         width={25}
         height={25}
       />

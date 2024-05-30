@@ -29,10 +29,13 @@ import { Social } from "../social";
 import { formToJSON } from "axios";
 
 import DOMPurify from 'dompurify';
+import ReCAPTCHA from "react-google-recaptcha";
 
 type FormInputs = {
   email: string;
   password: string;
+  code?: string;
+  recaptchaToken?: string;  // Make this optional
 };
 
 export default function LoginForm() {
@@ -55,6 +58,10 @@ export default function LoginForm() {
   //   formState: { errors },
   // } = useForm<FormInputs>();
   
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>();
+  const dispatch = useAppDispatch();
+  
+  
   const {
     register,
     handleSubmit,
@@ -68,6 +75,10 @@ export default function LoginForm() {
         password: "",
       }
     })
+
+    const handleCaptchaChange = (token: string | null) => {
+      setRecaptchaToken(token);
+    };
 
 
   const onSubmit: SubmitHandler<FormInputs> = (values: z.infer<typeof LoginSchema>) => {
@@ -106,6 +117,7 @@ export default function LoginForm() {
         .catch(() => setError("Something went wrong"));
     });
   };
+ 
     
 
   return (
@@ -166,15 +178,22 @@ export default function LoginForm() {
         {errors.password && (
           <span className={styles.errorInput}>{errors.password.message}</span>
         )}
+        <div className={`${styles.auth__recaptcha} recaptcha-container`}>
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            onChange={handleCaptchaChange}
+          />
+        </div>
         <p className={styles.auth__form__resetPassword}>
           Did you forget your password?{" "}
-          <Link href={"/auth/password-reset"}>Reset password here</Link>
+          <Link href={"/auth/reset"}>Reset password here</Link>
         </p>
         </>)}
         <FormError message={error || urlError} />
         <FormSuccess message={success} />
         <Button type="submit" disabled={isPending}> {isPending ? <Loader color="white"/> : showTwoFactor ? "Confirm" : "Login"}</Button>
-        {/* {showTwoFactor && (<Button onClick={() => setShowTwoFactor(false)} disabled={isPending}> {isPending ? <Loader color="white"/> : "Cancel"}</Button>)} */}
+        <div style={{height: "12px"}}></div>
+        {showTwoFactor && (<Button onClick={() => {setShowTwoFactor(false); reset();}} disabled={isPending}>Cancel</Button>)}
         </form>
         {!showTwoFactor && ( <><p className={styles.auth__form__register}>
           You dont have an account?{" "}
