@@ -10,6 +10,8 @@ import { FormSuccess } from "../FormSuccess";
 import { Loader } from "app/components/shared/Loader";
 import { FormError } from "../FormError";
 
+import DOMPurify from 'dompurify';
+
 type FormInputs = {
   email: string;
   password: string;
@@ -29,7 +31,20 @@ export default function ResetPasswordForm() {
   //const router = useRouter()
 
   const onSubmit = handleSubmit((data) => {
-    resetPassword2(data.email)
+
+    console.log("Pre-Sanitization: ");
+      console.log(data);
+      
+      // Sanitize the input values
+      const sanitizedValues = {
+        email: DOMPurify.sanitize(data.email),
+      };
+
+      console.log("Post-Sanitization: ");
+      console.log(sanitizedValues);
+
+
+    resetPassword2(sanitizedValues.email)
     .unwrap()
     .then(() => {
       setError(undefined);

@@ -28,6 +28,7 @@ import { signIn } from "../../../../../auth";
 import { Social } from "../social";
 import { formToJSON } from "axios";
 
+import DOMPurify from 'dompurify';
 
 type FormInputs = {
   email: string;
@@ -68,23 +69,36 @@ export default function LoginForm() {
       }
     })
 
+
   const onSubmit: SubmitHandler<FormInputs> = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
+
+    console.log("Pre-Sanitization: ");
+    console.log(values);
     
+    // Sanitize the input values
+    const sanitizedValues = {
+      email: DOMPurify.sanitize(values.email),
+      password: DOMPurify.sanitize(values.password),
+    };
+
+    console.log("Post-Sanitization: ");
+    console.log(sanitizedValues);
+
     startTransition(() => {
-      login(values, callbackUrl)
+      login(sanitizedValues, callbackUrl)
         .then((data) => {
           if (data?.error) {
             setError(data.error);
             reset();
           }
-
+  
           if (data?.success) {
             setSuccess(data.success);
             reset();
           }
-
+  
           if (data?.twoFactor) {
             setShowTwoFactor(true);
           }
@@ -92,6 +106,7 @@ export default function LoginForm() {
         .catch(() => setError("Something went wrong"));
     });
   };
+    
 
   return (
     <div className={styles.auth__form}>

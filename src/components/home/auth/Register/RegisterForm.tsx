@@ -20,6 +20,8 @@ import * as z from "zod";
 import { RegisterSchema } from "app/schemas";
 import { register2 } from "../../../../../actions/register";
 
+import DOMPurify from 'dompurify';
+
 type FormInputs = {
   name: string;
   last_name: string;
@@ -56,21 +58,37 @@ export default function RegisterForm() {
     })
 
     const onSubmit: SubmitHandler<FormInputs> = (values: z.infer<typeof RegisterSchema>) => {
+
+      console.log("Pre-Sanitization: ");
       console.log(values);
-      if(values.password !== values.re_password){
+      
+      // Sanitize the input values
+      const sanitizedValues = {
+        name: DOMPurify.sanitize(values.name),
+        last_name: DOMPurify.sanitize(values.last_name),
+        email: DOMPurify.sanitize(values.email),
+        password: DOMPurify.sanitize(values.password),
+        re_password: DOMPurify.sanitize(values.re_password),
+        terms: values.terms, // No necesita sanitización porque es un booleano
+      };
+
+      console.log("Post-Sanitization: ");
+      console.log(sanitizedValues);
+
+      if(sanitizedValues.password !== sanitizedValues.re_password){
         setError("Passwords do not match");
         return;
-      }else{
+      } else {
         setError("");
         startTransition(() => {
-          register2(values)
+          register2(sanitizedValues)
             .then((data) => {
               setError(data.error);
               setSuccess(data.success);
             })
-          })
+        });
       }
-    }
+    };
 
   return (
     <div className={styles.auth__form}>

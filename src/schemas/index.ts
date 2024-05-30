@@ -55,8 +55,8 @@ export const LoginSchema = z.object({
 export const RegisterSchema = z.object({
   name: z.string().min(1, {
     message: "*Name is required",
-  }).max(20, {
-    message: "*Maximum 20 characters allowed",
+  }).max(40, {
+    message: "*Maximum 40 characters allowed",
   }),
   last_name: z.string().max(20, {
     message: "*Maximum 20 characters allowed",
