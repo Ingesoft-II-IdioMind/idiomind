@@ -43,7 +43,7 @@ export default function LoginForm() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await login2({ email: data.email, password: data.password }).unwrap();
-      const response = await fetch("http://localhost:4545/requestToken", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_EMAIL_API}/requestToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function LoginForm() {
   });
   const onSubmitToken = async (email: string, token: string) => {
     try {
-      const response = await fetch("http://localhost:4545/verifyToken", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_EMAIL_API}/verifyToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
