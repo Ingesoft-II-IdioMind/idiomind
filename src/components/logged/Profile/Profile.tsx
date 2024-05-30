@@ -2,9 +2,10 @@ import { Button } from "app/components/shared/Button";
 import { Modal } from "app/components/shared/Modal";
 import styles from "./Profile.module.scss";
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { TextField } from "app/components/shared/TextField";
 import { ProfileImage } from "./ProfileImage/ProfileImage";
+import bcrypt from 'bcryptjs';
 import {
   useChangePasswordMutation,
   useDeleteAccountMutation,
@@ -22,10 +23,17 @@ import { FormSuccess } from "app/components/home/auth/FormSuccess";
 
 import StripeComponent from "app/components/shared/Subscription/StripeComponent";
 import Link from "next/link";
+import { useCurrentUser } from "app/hooks/use-current-user";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SettingsSchema } from "app/schemas";
+import { useSession } from "next-auth/react";
+import { z } from "zod";
+import { settings } from "../../../../actions/settings";
 
 export default function ProfileContent() {
   const router = useRouter();
-  const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
+  // const { data: user, isLoading, isFetching } = useRetrieveUserQuery();
   const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
   const [isEditPasswordOpen, setIsEditPasswordOpen] = useState(false);
   const [newPassword, setNewPassword] = useState("");
@@ -41,6 +49,46 @@ export default function ProfileContent() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [delete2, { isLoading: isLoading2 }] = useDeleteAccountMutation();
+
+  const user = useCurrentUser();
+
+  const { update } = useSession();
+  const [isPending, startTransition] = useTransition();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  }  = useForm<z.infer<typeof SettingsSchema>>({
+    resolver: zodResolver(SettingsSchema),
+    defaultValues: {
+      password: undefined,
+      newPassword: undefined,
+      name: user?.name || undefined,
+      email: user?.email || undefined,
+      isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
+    startTransition(() => {
+      settings({name:"newname"})
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+
+          if (data.success) {
+            update();
+            setSuccess(data.success);
+          }
+        })
+        .catch(() => setError('Something went wrong!'));
+    });
+  };
+
   const [changePassword2, { isLoading: isLoading3 }] =
     useChangePasswordMutation();
 
@@ -63,13 +111,6 @@ export default function ProfileContent() {
     setCurrentPassword(event.target.value);
   };
 
-  if (isLoading || isFetching) {
-    return (
-      <div className={styles.profile}>
-        <Loader color="orange" />
-      </div>
-    );
-  }
 
   function deleteAccount() {
     delete2({ current_password: password })
@@ -91,19 +132,48 @@ export default function ProfileContent() {
       });
   }
 
-  function changePassword() {
-    changePassword2({
-      new_password: newPassword,
-      re_new_password: newPassword2,
-      current_password: currentPassword,
-    })
-      .unwrap()
-      .then(() => {
-        toast.success("Password changed successfully");
-      })
-      .catch((e) => {
-        toast.error("Problem changing password account, please try again");
-      });
+  async function changePassword() {
+    if (newPassword !== newPassword2) {
+      setError("Passwords do not match");
+      return;
+    }
+    const newPass = await bcrypt.hash(newPassword, 10);
+    startTransition(() => {
+      settings({password: newPass })
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            update();
+            toast.success("password updated successfully");
+            setIsEditPasswordOpen(false);
+          }
+        })
+        .catch(() => setError('Something went wrong!'));
+    });
+  }
+
+  async function enableTwoFactor(state: boolean) {
+    startTransition(() => {
+      settings({isTwoFactorEnabled: state})
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            update();
+            if (state) {
+              toast.success("Two factor authentication enabled");
+            } else { 
+              toast.success("Two factor authentication disabled");
+            }
+          }
+        })
+        .catch(() => setError('Something went wrong!'));
+    });
   }
 
   return (
@@ -114,17 +184,17 @@ export default function ProfileContent() {
         <ul className={styles.userData}>
           <li>
             <TextField label="First Name">
-              <input type="text" disabled={true} value={user?.name} />
+              <input type="text" disabled={true} value={user?.name ?? ''} />
             </TextField>
           </li>
-          <li>
+          {/* <li>
             <TextField label="Last Name">
-              <input type="text" disabled={true} value={user?.last_name} />
+              <input type="text" disabled={true} value={user?.last_name ?? ''} />
             </TextField>
-          </li>
+          </li> */}
           <li>
             <TextField label="Email">
-              <input type="text" disabled={true} value={user?.email} />
+              <input type="text" disabled={true} value={user?.email ?? ''} />
             </TextField>
           </li>
           <li>
@@ -157,6 +227,15 @@ export default function ProfileContent() {
           >
             Delete account
           </li>
+          {user?.isOAuth ? <></>:
+          <li
+            onClick={() => {
+              enableTwoFactor(!user?.isTwoFactorEnabled);
+            }}
+          >
+            
+           {user?.isTwoFactorEnabled? "Disable two factor authentication": "Enable two factor authentication"}
+          </li>} 
         </ul>
       </div>
       <Modal
@@ -220,7 +299,7 @@ export default function ProfileContent() {
         title="Change Password"
       >
         <form>
-          <TextField label="Current password">
+          {/* <TextField label="Current password">
             <input
               type={visiblePassword2 ? "text" : "password"}
               onChange={handleCurrentPasswordChange}
@@ -242,7 +321,7 @@ export default function ProfileContent() {
                 <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c8.4-19.3 10.6-41.4 4.8-63.3c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zM373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5L373 389.9z" />
               </svg>
             )}
-          </TextField>
+          </TextField> */}
           <TextField label="New password">
             <input
               type={visiblePassword3 ? "text" : "password"}

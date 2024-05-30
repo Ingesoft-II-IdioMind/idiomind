@@ -26,14 +26,14 @@ export const PDFViewer2: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      <PdfViewer
+      {/* <PdfViewer
         url={pdfUrl}
         onTextSelection={handleTextSelection}
       />
       {/* <Viewer
         fileUrl={pdfUrl}
         plugins={[defaultLayoutPluginInstance]}
-      /> */}
+      /> */} 
     </div>
   );
 };
