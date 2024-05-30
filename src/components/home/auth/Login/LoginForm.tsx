@@ -13,7 +13,7 @@ import { useLoginMutation } from "app/redux/features/authApiSlice";
 import { FormSuccess } from "../FormSuccess";
 import { useAppDispatch } from "app/redux/hooks";
 import { setAuth } from "app/redux/features/authSlice";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { Loader } from "app/components/shared/Loader";
 import { toast } from "react-toastify";
 import { continueWithGoogle } from "app/utils";
@@ -30,32 +30,64 @@ export default function LoginForm() {
   const [success, setSuccess] = useState<string | undefined>("");
   const [login2, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
-  
-
+  const [showTokenInput, setShowTokenInput] = useState(false);
+  const [token, setToken] = useState("");
+  const [email, setEmail] = useState("");
+  const [verifyToken, setVerifyToken] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      await login2({ email: data.email, password: data.password }).unwrap();
+      const response = await fetch("http://localhost:4545/requestToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: data.email }),
+      });
+      if (!response.ok) {
+        throw new Error("Error al enviar el token");
+      }
+      setShowTokenInput(true);
+    } catch (error) {
+      setSuccess(undefined);
+      setError("There was an error while login, please try again");
+    }
+  });
+  const onSubmitToken = async (email: string, token: string) => {
+    try {
+      const response = await fetch("http://localhost:4545/verifyToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email, token: token }), // Pasar el email y el token
+      });
 
-    login2({email: data.email, password: data.password})
-      .unwrap()
-      .then(() => {
+      if (!response.ok) {
+        toast.error("Token invalido");
+        throw new Error("Error al enviar el token");
+        
+      }else{
+        dispatch(setAuth());
         setError(undefined);
-        toast.success('Logged in');
+        toast.success("Logged in");
         dispatch(setAuth());
         setSuccess("You have been logged successfully");
         router.push('/logged');
-      })
-      .catch((e) => {
-        setSuccess(undefined);
-        setError(e.data.detail || "There was an error while login, please try again");
-      });
-      
-  });
+      }
 
+      
+    } catch (error:any) {
+      setError(error.message || "Invalid token, please try again");
+      setSuccess("");
+    }
+  };
   return (
     <div className={styles.auth__form}>
       <div className={styles.auth__form__logo}>
@@ -65,6 +97,7 @@ export default function LoginForm() {
       <form onSubmit={onSubmit}>
         <TextField label="E-mail">
           <input
+          
             type="email"
             disabled={isLoading}
             {...register("email", {
@@ -78,6 +111,7 @@ export default function LoginForm() {
               },
             })}
             placeholder="user@email.com"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </TextField>
         {errors.email && (
@@ -113,21 +147,49 @@ export default function LoginForm() {
             </svg>
           )}
         </TextField>
-        {errors.password && (
-          <span className={styles.errorInput}>{errors.password.message}</span>
+
+        {showTokenInput ? (
+          <>
+            <TextField label="Verification Token">
+              <input
+                type="text"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                placeholder="Enter verification token from your email"
+              />
+            </TextField>
+            <Button
+              onClick={() => onSubmitToken(email, token)}
+              disabled={verifyToken}
+            >
+              Submit Token
+            </Button>
+          </>
+        ) : (
+          <>
+            {errors.password && (
+              <span className={styles.errorInput}>
+                {errors.password.message}
+              </span>
+            )}
+            <p className={styles.auth__form__resetPassword}>
+              Did you forget your password?{" "}
+              <Link href={"/auth/password-reset"}>Reset password here</Link>
+            </p>
+            <FormError message={error} />
+            <FormSuccess message={success} />
+            <Button type="submit" disabled={isLoading}>
+              {" "}
+              {isLoading ? <Loader color="white" /> : "Log in"}
+            </Button>
+            <p className={styles.auth__form__register}>
+              You dont have an account?{" "}
+              <Link href={"/auth/register"}>Register here</Link>
+            </p>
+          </>
         )}
-        <p className={styles.auth__form__resetPassword}>
-          Did you forget your password?{" "}
-          <Link href={"/auth/password-reset"}>Reset password here</Link>
-        </p>
-        <FormError message={error} />
-        <FormSuccess message={success} />
-        <Button type="submit" disabled={isLoading}> {isLoading ? <Loader color="white"/> : "Log in"}</Button>
-        <p className={styles.auth__form__register}>
-          You dont have an account?{" "}
-          <Link href={"/auth/register"}>Register here</Link>
-        </p>
       </form>
+
       <FormDivider />
       <Button
         haveIcon={true}
@@ -141,8 +203,8 @@ export default function LoginForm() {
         )}
         onClick={continueWithGoogle}
       >
-      Log in with Google 
-    </Button>
+        Log in with Google
+      </Button>
       <div></div>
     </div>
   );
